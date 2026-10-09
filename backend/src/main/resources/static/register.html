@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Personalized Learning Tutor - Register</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eeeaff, #ddd7ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 900px;
+            min-height: 570px;
+            background: white;
+            border-radius: 22px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 20px 60px rgba(55, 35, 130, 0.20);
+        }
+
+        .left {
+            width: 50%;
+            padding: 55px 65px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .brand {
+            color: #6547e8;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #222;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        .input-box {
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 17px;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            background: #f1efff;
+            font-size: 14px;
+        }
+
+        input:focus {
+            box-shadow: 0 0 0 2px #8064ef;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #7655ed, #5940dc);
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #6547e8;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .login-link a {
+            color: #6547e8;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .right {
+            width: 50%;
+            background: linear-gradient(145deg, #6d4df0, #4f35d4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            top: -230px;
+            right: -230px;
+        }
+
+        .circle.two {
+            width: 450px;
+            height: 450px;
+            top: -150px;
+            right: -170px;
+        }
+
+        .card {
+            width: 310px;
+            height: 350px;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            backdrop-filter: blur(8px);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .icon {
+            font-size: 75px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 25px;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        @media(max-width:750px) {
+            .container {
+                width: 94%;
+            }
+
+            .right {
+                display: none;
+            }
+
+            .left {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="left">
+
+        <div class="brand">
+            ? Personalized Learning Tutor
+        </div>
+
+        <h1>CREATE ACCOUNT</h1>
+
+        <p class="subtitle">
+            Start your personalized learning journey
+        </p>
+
+        <form id="registerForm">
+
+            <div class="input-box">
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="??  Username"
+                    required>
+            </div>
+
+            <div class="input-box">
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="??  Password"
+                    required>
+            </div>
+
+            <button type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="message" id="message"></div>
+
+        <div class="login-link">
+            Already have an account?
+            <a href="/login-page.html">Login</a>
+        </div>
+
+    </div>
+
+    <div class="right">
+
+        <div class="circle"></div>
+        <div class="circle two"></div>
+
+        <div class="card">
+
+            <div class="icon">??</div>
+
+            <h2>Start Learning</h2>
+
+            <p>
+                Create your account and get
+                personalized courses,
+                recommendations and progress tracking.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById("registerForm").addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const username =
+        document.getElementById("username").value;
+
+    const password =
+        document.getElementById("password").value;
+
+    const message =
+        document.getElementById("message");
+
+    try {
+
+        const response = await fetch("/api/auth/register", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                role: "STUDENT"
+            })
+
+        });
+
+        const result = await response.text();
+
+        message.innerText = result;
+
+        if (result === "User registered successfully") {
+
+            setTimeout(function() {
+               window.location.href = "/login-page.html";
+            }, 1200);
+
+        }
+
+    } catch (error) {
+
+        message.innerText =
+            "Registration failed. Please try again.";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

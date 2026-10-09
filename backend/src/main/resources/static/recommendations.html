@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recommendations | Personalized Tutor</title>
+<style>
+:root{--p:#6847f5;--lp:#f0ecff;--bg:#f7f8fc;--text:#182338;--muted:#75809a;--border:#e9e7f2}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:var(--bg);color:var(--text);font-size:15px}
+.sidebar{position:fixed;inset:0 auto 0 0;width:280px;background:white;padding:24px 14px 16px;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid var(--border);z-index:10}
+.logo{display:flex;align-items:center;gap:12px;padding:0 10px 28px;font-size:21px;font-weight:800;line-height:1.35}
+.logo-icon{width:43px;height:46px;flex-shrink:0;border-radius:14px;background:linear-gradient(135deg,#805cff,#5637df);display:grid;place-items:center;font-size:22px;color:white}
+.nav:before{content:"Learning menu";display:block;padding:0 14px 11px;color:#9294aa;font-size:13px;letter-spacing:1.5px}
+.nav a{display:flex;align-items:center;min-height:46px;padding:12px 14px;margin-bottom:5px;border-radius:13px;color:#68738e;text-decoration:none;font-size:15px;font-weight:600}
+.nav a:hover,.nav a.active{background:var(--lp);color:var(--p)}
+.grow-card{margin-top:auto;padding:17px;border-radius:18px;color:white;background:linear-gradient(135deg,#704cf5,#5033d3);line-height:1.55}
+.grow-card h3{font-size:16px;margin-bottom:6px}.grow-card p{font-size:13px;margin-bottom:12px}
+.grow-card a{display:inline-block;background:white;color:var(--p);padding:9px 12px;border-radius:10px;font-size:13px;font-weight:bold;text-decoration:none}
+.logout{padding-top:14px}.logout button{width:100%;min-height:46px;border:1px solid var(--border);border-radius:12px;background:white;color:#68738e;font-size:14px;font-weight:600;cursor:pointer}
+.main{margin-left:280px;padding:30px;max-width:1600px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}
+h1{font-size:28px;margin-bottom:7px}.muted{color:var(--muted);line-height:1.6}
+.user{padding:11px 15px;border:1px solid var(--border);background:white;border-radius:11px;font-weight:bold}
+.hero{padding:25px;border-radius:19px;background:linear-gradient(120deg,#704cf5,#5033d3);color:white;margin-bottom:22px}
+.hero h2{font-size:23px;margin-bottom:9px}.hero p{line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.card{background:white;border:1px solid #efedf5;border-radius:16px;padding:20px;box-shadow:0 5px 20px #19233c05;display:flex;flex-direction:column;min-width:0}
+.icon{width:47px;height:47px;display:grid;place-items:center;background:var(--lp);border-radius:13px;font-size:22px;margin-bottom:14px}
+.card h3{font-size:18px;margin-bottom:9px;overflow-wrap:anywhere}.card p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:15px;flex:1}
+.tag{display:inline-block;padding:6px 9px;background:var(--lp);color:var(--p);border-radius:20px;font-size:11px;font-weight:bold;margin-bottom:14px;align-self:flex-start}
+.btn{display:inline-block;border:0;border-radius:9px;background:var(--p);color:white;padding:11px 14px;font-size:13px;font-weight:bold;text-decoration:none;cursor:pointer}
+.empty{grid-column:1/-1;background:white;padding:24px;border-radius:14px;color:var(--muted);line-height:1.8}
+@media(max-width:1100px){.sidebar{width:250px}.main{margin-left:250px;padding:22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+@media(max-width:650px){.sidebar{position:relative;width:100%;height:auto}.logo{padding-bottom:20px}.nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.nav a{font-size:13px;padding:10px}.grow-card{margin-top:15px}.main{margin:0;padding:17px 13px}.header{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+<div class="logo"><div class="logo-icon">🎓</div><div>Personalized<br>Tutor</div></div>
+<nav class="nav">
+<a href="/dashboard">🏠 Dashboard</a><a href="/profile">👤 My Profile</a><a href="/courses.html">📚 My Courses</a>
+<a href="/progress.html">📊 Learning Progress</a><a href="/practice.html">✏️ Practice &amp; Quizzes</a>
+<a class="active" href="/recommendations.html">✨ Recommendations</a><a href="/settings.html">⚙️ Settings</a>
+<a id="adminLink" href="/admin.html" hidden>▦ Admin Dashboard</a>
+</nav>
+<div class="grow-card"><h3>🚀 Keep growing!</h3><p>Small learning sessions every day can help you build lasting skills.</p><a href="/courses.html">Explore courses →</a></div>
+<div class="logout"><button onclick="logout()">↪ &nbsp; Logout</button></div>
+</aside>
+<main class="main">
+<header class="header"><div><h1>Recommended for You</h1><p class="muted">Discover learning opportunities for your next step.</p></div><div class="user" id="username">Loading...</div></header>
+<section class="hero"><h2>Your next learning opportunity</h2><p>Explore more subjects, strengthen your knowledge, and keep moving toward your goals.</p></section>
+<section id="grid" class="grid"><div class="empty">Loading recommendations...</div></section>
+</main>
+<script>
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function load(){
+const grid=document.getElementById("grid");
+try{
+const ur=await fetch("/api/auth/me");if(!ur.ok){location.href="/login-page.html";return}
+const u=await ur.json();document.getElementById("username").textContent=u.username||"Learner";
+if(String(u.role).toUpperCase()==="ADMIN")document.getElementById("adminLink").hidden=false;
+const [rr,cr]=await Promise.all([fetch("/api/recommendations"),fetch("/api/courses")]);
+if(rr.ok){
+const recs=await rr.json();
+if(Array.isArray(recs)&&recs.length){
+grid.innerHTML=recs.map((r,i)=>{
+const id=r.courseId??r.id,title=esc(r.courseTitle??r.title??"Recommended Course");
+return `<article class="card"><div class="icon">${["✦","◈","▤"][i%3]}</div><span class="tag">Recommended</span><h3>${title}</h3><p>${esc(r.reason??r.description??"Continue building your skills with this course.")}</p><a class="btn" href="/learn.html?courseId=${encodeURIComponent(id)}">Explore Course →</a></article>`;
+}).join("");return;
+}
+}
+if(!cr.ok)throw Error("Unable to load courses.");
+const courses=await cr.json();
+if(!courses.length){grid.innerHTML='<div class="empty">No recommendations are available right now.</div>';return}
+grid.innerHTML=courses.slice(0,6).map((c,i)=>`<article class="card"><div class="icon">${["✦","◈","▤"][i%3]}</div><span class="tag">Explore next</span><h3>${esc(c.title||"Course")}</h3><p>${esc(c.description||"Explore this subject and build your knowledge.")}</p><a class="btn" href="/courses.html">View Course →</a></article>`).join("");
+}catch(e){grid.innerHTML='<div class="empty">Unable to load recommendations. Visit <a href="/courses.html">My Courses</a> to explore available subjects.</div>';console.error(e)}
+}
+async function logout(){try{await fetch("/logout",{method:"POST"})}finally{location.href="/login-page.html?logout"}}
+load();
+</script>
+</body>
+</html>

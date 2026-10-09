@@ -1,0 +1,171 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile | Personalized Tutor</title>
+<style>
+:root{--purple:#6847f5;--light:#f0ecff;--bg:#f7f8fc;--text:#182338;--muted:#75809a;--border:#e9e7f2}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:var(--bg);color:var(--text);font-size:15px}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:280px;background:white;padding:24px 14px 16px;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid var(--border);z-index:10}
+.logo{display:flex;align-items:center;gap:12px;padding:0 10px 28px;font-size:21px;font-weight:800;line-height:1.35;color:var(--text)}
+.logo-icon{width:43px;height:46px;flex-shrink:0;border-radius:14px;background:linear-gradient(135deg,#805cff,#5637df);display:grid;place-items:center;color:white;font-size:22px}
+.nav:before{content:"Learning menu";display:block;padding:0 14px 11px;color:#9294aa;font-size:13px;letter-spacing:1.5px}
+.nav a{display:flex;align-items:center;min-height:46px;padding:12px 14px;margin-bottom:5px;border-radius:13px;color:#68738e;text-decoration:none;font-size:15px;font-weight:600}
+.nav a:hover,.nav a.active{background:var(--light);color:var(--purple)}
+.grow-card{margin-top:auto;padding:17px;border-radius:18px;color:white;background:linear-gradient(135deg,#704cf5,#5033d3);line-height:1.55}
+.grow-card h3{font-size:16px;margin-bottom:6px}.grow-card p{font-size:13px;margin-bottom:12px}
+.grow-card a{display:inline-block;background:white;color:var(--purple);padding:9px 12px;border-radius:10px;font-size:13px;font-weight:bold;text-decoration:none}
+.logout{padding-top:14px}.logout button{width:100%;min-height:46px;border:1px solid var(--border);border-radius:12px;padding:12px;background:white;color:#68738e;font-size:14px;font-weight:600;cursor:pointer}
+.main{margin-left:280px;padding:30px;max-width:1600px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}
+h1{font-size:28px;margin-bottom:7px}.muted{color:var(--muted);line-height:1.6}
+.user-pill{background:white;border:1px solid var(--border);padding:11px 15px;border-radius:11px;font-weight:bold;overflow-wrap:anywhere}
+.hero{display:flex;align-items:center;gap:22px;background:linear-gradient(120deg,#704cf5,#5033d3);padding:26px;border-radius:19px;color:white;margin-bottom:22px}
+.avatar{width:78px;height:78px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;background:#ffffff25;border:2px solid #ffffff70;font-size:32px;font-weight:bold}
+.hero h2{font-size:23px;margin:7px 0;overflow-wrap:anywhere}.hero p{opacity:.93;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:22px}
+.card,.panel{background:white;border:1px solid #efedf5;border-radius:16px;padding:21px;box-shadow:0 5px 20px #19233c05}
+.stat-icon{font-size:23px;margin-bottom:12px}.card small{display:block;color:var(--muted);font-size:12px;font-weight:bold;margin-bottom:9px}
+.value{font-size:27px;font-weight:bold;color:var(--purple)}
+.panel{margin-bottom:20px}.panel h2{font-size:19px;margin-bottom:17px}
+.info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.info{padding:15px;background:#faf9fe;border:1px solid var(--border);border-radius:11px;min-width:0}
+.info small{display:block;color:var(--muted);font-size:13px;margin-bottom:7px}.info strong{overflow-wrap:anywhere}
+.course{border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}.course:last-child{margin-bottom:0}
+.course-top,.course-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.course-top{margin-bottom:11px}.course-title{overflow-wrap:anywhere}.percent{color:var(--purple);font-weight:bold;white-space:nowrap}
+.track{height:8px;background:#e8eaf1;border-radius:20px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#8664ff,#6242ed)}
+.course-bottom{margin-top:12px;font-size:13px;color:var(--muted)}
+.btn{display:inline-block;border:0;border-radius:9px;background:var(--purple);color:white;padding:10px 13px;font-size:13px;font-weight:bold;text-decoration:none;cursor:pointer}
+.empty{padding:18px;background:#faf9fe;border-radius:11px;color:var(--muted);line-height:1.8}
+.link{color:var(--purple);font-weight:bold;text-decoration:none}
+@media(max-width:1050px){.sidebar{width:250px}.main{margin-left:250px;padding:22px}.stats{grid-template-columns:1fr}}
+@media(max-width:650px){.sidebar{position:relative;width:100%;height:auto}.logo{padding-bottom:20px}.nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.nav a{font-size:13px;padding:10px}.grow-card{margin-top:15px}.main{margin-left:0;padding:17px 13px}.header{align-items:flex-start;flex-direction:column}.hero{align-items:flex-start;flex-direction:column}.info-grid{grid-template-columns:1fr}.course-bottom{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="logo"><div class="logo-icon">🎓</div><div>Personalized<br>Tutor</div></div>
+    <nav class="nav">
+        <a href="/dashboard">🏠 Dashboard</a>
+        <a class="active" href="/profile">👤 My Profile</a>
+        <a href="/courses.html">📚 My Courses</a>
+        <a href="/progress.html">📊 Learning Progress</a>
+        <a href="/practice.html">✏️ Practice &amp; Quizzes</a>
+        <a href="/recommendations.html">✨ Recommendations</a>
+        <a href="/settings.html">⚙️ Settings</a>
+        <a id="adminLink" href="/admin.html" hidden>▦ Admin Dashboard</a>
+    </nav>
+    <div class="grow-card">
+        <h3>🚀 Keep growing!</h3>
+        <p>Small learning sessions every day can help you build lasting skills.</p>
+        <a href="/courses.html">Explore courses →</a>
+    </div>
+    <div class="logout"><button onclick="logout()">↪ &nbsp; Logout</button></div>
+</aside>
+
+<main class="main">
+    <header class="header">
+        <div><h1>My Profile</h1><p class="muted">Your account and learning journey in one place.</p></div>
+        <div class="user-pill" id="topUsername">Loading...</div>
+    </header>
+
+    <section class="hero">
+        <div class="avatar" id="avatar">S</div>
+        <div><p>LEARNER PROFILE</p><h2 id="username">Loading profile...</h2><p id="role">Student account</p></div>
+    </section>
+
+    <section class="stats">
+        <div class="card"><div class="stat-icon">📚</div><small>ENROLLED COURSES</small><div class="value" id="enrolledCount">0</div></div>
+        <div class="card"><div class="stat-icon">📈</div><small>AVERAGE PROGRESS</small><div class="value" id="averageProgress">0%</div></div>
+        <div class="card"><div class="stat-icon">🎯</div><small>QUIZ ATTEMPTS</small><div class="value" id="quizAttempts">0</div></div>
+    </section>
+
+    <section class="panel">
+        <h2>Account Information</h2>
+        <div class="info-grid">
+            <div class="info"><small>Username</small><strong id="infoUsername">—</strong></div>
+            <div class="info"><small>Account Type</small><strong id="infoRole">—</strong></div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>My Learning Journey</h2>
+        <div id="courseList" class="empty">Loading your courses...</div>
+    </section>
+
+    <section class="panel">
+        <h2>Continue Growing</h2>
+        <p class="muted" style="margin-bottom:14px">Explore subjects, practise your skills, and keep building your knowledge.</p>
+        <a class="btn" href="/courses.html">Explore Courses →</a>
+    </section>
+</main>
+
+<script>
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+async function loadProfile(){
+    const list=document.getElementById("courseList");
+    try{
+        const userRes=await fetch("/api/auth/me");
+        if(!userRes.ok){location.href="/login-page.html";return}
+        const user=await userRes.json();
+        const username=user.username||"Student";
+        const role=user.role||"STUDENT";
+
+        document.getElementById("username").textContent=username;
+        document.getElementById("topUsername").textContent=username;
+        document.getElementById("avatar").textContent=username.charAt(0).toUpperCase();
+        document.getElementById("role").textContent=role+" ACCOUNT";
+        document.getElementById("infoUsername").textContent=username;
+        document.getElementById("infoRole").textContent=role;
+
+        if(String(role).toUpperCase()==="ADMIN")document.getElementById("adminLink").hidden=false;
+
+        const [enrollRes,attemptRes]=await Promise.all([
+            fetch("/api/enrollments"),
+            fetch("/api/quizzes/my-attempts")
+        ]);
+        const enrollments=enrollRes.ok?await enrollRes.json():[];
+        const attempts=attemptRes.ok?await attemptRes.json():[];
+        const avg=enrollments.length?Math.round(enrollments.reduce((s,c)=>s+Number(c.progress||0),0)/enrollments.length):0;
+
+        document.getElementById("enrolledCount").textContent=enrollments.length;
+        document.getElementById("averageProgress").textContent=avg+"%";
+        document.getElementById("quizAttempts").textContent=attempts.length;
+
+        if(!enrollments.length){
+            list.innerHTML='You have not enrolled in a course yet. <a class="link" href="/courses.html">Browse courses →</a>';
+            return;
+        }
+
+        list.innerHTML=enrollments.map(c=>{
+            const progress=Math.max(0,Math.min(100,Number(c.progress||0)));
+            const id=c.courseId??c.id;
+            const title=esc(c.courseTitle??c.title??"Course");
+            return `<article class="course">
+                <div class="course-top"><strong class="course-title">${title}</strong><span class="percent">${progress}%</span></div>
+                <div class="track"><div class="fill" style="width:${progress}%"></div></div>
+                <div class="course-bottom">
+                    <span>${progress>=100?"Completed":progress>0?"In progress":"Not started"}</span>
+                    <a class="btn" href="/learn.html?courseId=${encodeURIComponent(id)}">${progress>=100?"Review Course":progress>0?"Continue Learning":"Start Learning"}</a>
+                </div>
+            </article>`;
+        }).join("");
+    }catch(e){
+        list.textContent="Unable to load profile details. Please refresh the page.";
+        console.error(e);
+    }
+}
+
+async function logout(){
+    try{await fetch("/logout",{method:"POST"})}
+    finally{location.href="/login-page.html?logout"}
+}
+loadProfile();
+</script>
+</body>
+</html>

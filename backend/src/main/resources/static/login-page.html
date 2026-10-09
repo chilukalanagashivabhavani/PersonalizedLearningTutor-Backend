@@ -1,0 +1,420 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Learning Tutor - Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eeeaff, #ddd7ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .background-circle {
+            position: fixed;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(111, 76, 255, 0.12);
+            top: -70px;
+            left: -50px;
+            pointer-events: none;
+        }
+
+        .background-circle.two {
+            width: 130px;
+            height: 130px;
+            top: auto;
+            left: auto;
+            right: -50px;
+            bottom: -40px;
+        }
+
+        .login-container {
+            width: min(1120px, 100%);
+            min-height: 620px;
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 20px 60px rgba(55, 35, 130, 0.20);
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-left {
+            width: 50%;
+            padding: 65px clamp(30px, 7vw, 88px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #6547e8;
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 48px;
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: #eee9ff;
+            font-size: 25px;
+            flex-shrink: 0;
+        }
+
+        .login-left h1 {
+            font-size: 38px;
+            color: #19172a;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #858296;
+            font-size: 15px;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        .input-box {
+            margin-bottom: 18px;
+        }
+
+        .input-box label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #48435c;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 17px 16px 17px 48px;
+            border: 1px solid transparent;
+            outline: none;
+            border-radius: 12px;
+            background: #f3f0ff;
+            color: #29253b;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .input-box input:focus {
+            border-color: #8064ef;
+            box-shadow: 0 0 0 3px rgba(128, 100, 239, 0.12);
+            background: #fff;
+        }
+
+        .login-btn {
+            width: 100%;
+            border: none;
+            padding: 17px;
+            margin-top: 7px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #7655ed, #5940dc);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(101, 71, 232, 0.25);
+            transition: 0.2s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(101, 71, 232, 0.32);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 28px 0 18px;
+            color: #aaa5ba;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            height: 1px;
+            background: #e8e5ef;
+            flex: 1;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 23px;
+            font-size: 14px;
+            color: #777286;
+        }
+
+        .register-link a {
+            color: #6547e8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .login-right {
+            width: 50%;
+            background: linear-gradient(145deg, #704ff0, #4f35d4);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .wave {
+            position: absolute;
+            width: 650px;
+            height: 650px;
+            border: 2px solid rgba(255,255,255,0.09);
+            border-radius: 50%;
+            top: -250px;
+            right: -250px;
+        }
+
+        .wave.two {
+            width: 500px;
+            height: 500px;
+            top: -150px;
+            right: -180px;
+        }
+
+        .learning-card {
+            width: min(390px, 100%);
+            min-height: 405px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 35px;
+        }
+
+        .book-icon {
+            width: 125px;
+            height: 125px;
+            border-radius: 32px;
+            background: rgba(255,255,255,0.14);
+            display: grid;
+            place-items: center;
+            font-size: 76px;
+            margin-bottom: 25px;
+        }
+
+        .learning-card h2 {
+            font-size: 30px;
+            margin-bottom: 14px;
+        }
+
+        .learning-card p {
+            font-size: 16px;
+            line-height: 1.8;
+            opacity: 0.94;
+        }
+
+        .feature-label {
+            margin-top: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .feature-label span {
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .star {
+            position: absolute;
+            bottom: 65px;
+            left: 35px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: white;
+            color: #6547e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            box-shadow: 0 8px 20px rgba(35, 15, 100, 0.18);
+            z-index: 3;
+        }
+
+        @media (max-width: 750px) {
+            body {
+                padding: 12px;
+            }
+
+            .login-container {
+                min-height: auto;
+                border-radius: 22px;
+            }
+
+            .login-right {
+                display: none;
+            }
+
+            .login-left {
+                width: 100%;
+                padding: 38px 28px;
+            }
+
+            .brand {
+                margin-bottom: 38px;
+                font-size: 19px;
+            }
+
+            .login-left h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-circle"></div>
+    <div class="background-circle two"></div>
+
+    <div class="login-container">
+        <div class="login-left">
+
+            <div class="brand">
+                <span class="brand-icon" aria-hidden="true">🎓</span>
+                <span>Personalized Learning Tutor</span>
+            </div>
+
+            <h1>Welcome Back!</h1>
+
+            <p class="subtitle">
+                Continue your personalized learning journey.
+            </p>
+
+            <form method="post" action="/login">
+                <div class="input-box">
+                    <label for="username">Username</label>
+                    <div class="input-wrap">
+                        <span class="input-icon" aria-hidden="true">👤</span>
+                        <input
+                            id="username"
+                            type="text"
+                            name="username"
+                            placeholder="Enter your username"
+                            autocomplete="username"
+                            required>
+                    </div>
+                </div>
+
+                <div class="input-box">
+                    <label for="password">Password</label>
+                    <div class="input-wrap">
+                        <span class="input-icon" aria-hidden="true">🔒</span>
+                        <input
+                            id="password"
+                            type="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+                    </div>
+                </div>
+
+                <button class="login-btn" type="submit">
+                    Login to Your Account →
+                </button>
+            </form>
+
+            <div class="divider">
+                Secure student access
+            </div>
+
+            <div class="register-link">
+                Don't have an account?
+                <a href="/register">Create Account</a>
+            </div>
+        </div>
+
+        <div class="login-right">
+            <div class="wave"></div>
+            <div class="wave two"></div>
+
+            <div class="learning-card">
+                <div class="book-icon" aria-hidden="true">🤖</div>
+
+                <h2>Learn Smarter</h2>
+
+                <p>
+                    Personalized learning, intelligent recommendations,
+                    and continuous progress tracking.
+                </p>
+
+                <div class="feature-label">
+                    <span>📚 Learn</span>
+                    <span>🧠 Practice</span>
+                    <span>📈 Grow</span>
+                </div>
+            </div>
+
+            <div class="star" aria-hidden="true">✨</div>
+        </div>
+    </div>
+</body>
+</html>
+```

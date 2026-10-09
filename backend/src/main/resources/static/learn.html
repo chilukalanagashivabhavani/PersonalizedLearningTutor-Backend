@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Learn | Personalized Learning Tutor</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .topbar {
+            height: 70px;
+            background: #111827;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .back-btn,
+        .logout-btn {
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            background: #374151;
+            color: white;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .course-header {
+            background: white;
+            padding: 28px 35px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .course-header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .course-header p {
+            color: #6b7280;
+            max-width: 900px;
+            line-height: 1.6;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .learning-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: calc(100vh - 170px);
+        }
+
+        .sidebar {
+            background: #111827;
+            color: white;
+            padding: 25px 18px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .topic {
+            padding: 14px;
+            border-radius: 9px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.2s;
+        }
+
+        .topic:hover {
+            background: #1f2937;
+        }
+
+        .topic.active {
+            background: #2563eb;
+        }
+
+        .topic.completed {
+            border-color: #22c55e;
+        }
+
+        .topic-number {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+
+        .topic.active .topic-number {
+            color: #dbeafe;
+        }
+
+        .topic-title {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .check {
+            color: #22c55e;
+            float: right;
+            font-weight: bold;
+        }
+
+        .main-content {
+            padding: 35px;
+            max-width: 1000px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .progress-section {
+            background: white;
+            padding: 18px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #2563eb;
+            transition: width 0.4s;
+        }
+
+        .lesson-card {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.07);
+        }
+
+        .lesson-number {
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .lesson-card h2 {
+            font-size: 30px;
+            color: #111827;
+            margin-bottom: 25px;
+        }
+
+        .lesson-content {
+            line-height: 1.8;
+            color: #374151;
+            font-size: 16px;
+        }
+
+        .lesson-content p {
+            margin-bottom: 18px;
+        }
+
+        .lesson-content ul {
+            margin: 10px 0 20px 25px;
+        }
+
+        .lesson-content li {
+            margin-bottom: 7px;
+        }
+
+        .content-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .content-box h3 {
+            color: #1d4ed8;
+            margin-bottom: 8px;
+        }
+
+        .example-box {
+            background: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .example-box h3 {
+            color: #15803d;
+            margin-bottom: 8px;
+        }
+
+        .key-box {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .key-box h3 {
+            color: #c2410c;
+            margin-bottom: 8px;
+        }
+
+        .lesson-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .action-btn {
+            padding: 13px 20px;
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .previous-btn {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .complete-btn {
+            background: #16a34a;
+            color: white;
+        }
+
+        .next-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #6b7280;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .completion {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 50px 30px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.07);
+        }
+
+        .completion-icon {
+            font-size: 65px;
+            margin-bottom: 15px;
+        }
+
+        .completion h2 {
+            font-size: 30px;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .completion p {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .quiz-btn {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* AI Assistant */
+
+        .assistant-button {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(37,99,235,0.35);
+            z-index: 200;
+        }
+
+        .assistant-panel {
+            position: fixed;
+            right: 25px;
+            bottom: 95px;
+            width: 350px;
+            max-width: calc(100vw - 40px);
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: none;
+            z-index: 200;
+        }
+
+        .assistant-header {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .assistant-header button {
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .assistant-body {
+            padding: 15px;
+        }
+
+        .assistant-message {
+            background: #f3f4f6;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 12px;
+        }
+
+        .quick-actions button {
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 18px;
+            padding: 7px 10px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .assistant-input {
+            display: flex;
+            gap: 8px;
+        }
+
+        .assistant-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .assistant-input button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 13px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 800px) {
+            .learning-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                padding: 15px;
+            }
+
+            .topic-list {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .main-content {
+                padding: 18px;
+            }
+
+            .lesson-card {
+                padding: 22px;
+            }
+
+            .lesson-card h2 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .topic-list {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .brand {
+                font-size: 18px;
+            }
+
+            .back-btn {
+                display: none;
+            }
+
+            .lesson-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="brand">🎓 LearnAI</div>
+
+    <div class="top-actions">
+        <button class="back-btn" onclick="window.location.href='/courses.html'">
+            ← My Courses
+        </button>
+
+        <button class="logout-btn" onclick="logout()">
+            Logout
+        </button>
+    </div>
+</header>
+
+<section class="course-header">
+    <h1 id="courseTitle">Loading course...</h1>
+
+    <p id="courseDescription">
+        Please wait while the course is loading.
+    </p>
+
+    <div class="course-meta">
+        <span class="badge" id="courseDifficulty">Loading...</span>
+        <span class="badge" id="topicCount">0 Topics</span>
+    </div>
+</section>
+
+<div class="learning-layout">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-title">
+            Course Topics
+        </div>
+
+        <div class="topic-list" id="topicList">
+            <div class="loading">
+                Loading topics...
+            </div>
+        </div>
+
+    </aside>
+
+    <main class="main-content">
+
+        <div class="progress-section">
+
+            <div class="progress-header">
+                <span>Course Progress</span>
+                <span id="progressText">0%</span>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+        </div>
+
+        <div id="lessonArea">
+
+            <div class="lesson-card">
+
+                <div class="loading">
+                    Loading lesson...
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="completion" id="completionArea">
+
+            <div class="completion-icon">
+                🎉
+            </div>
+
+            <h2>Course Completed!</h2>
+
+            <p>
+                Excellent work! You have completed all the topics in this course.
+            </p>
+
+            <button class="quiz-btn" onclick="openQuiz()">
+                📝 Take Course Quiz
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- AI Assistant -->
+
+<button class="assistant-button" onclick="toggleAssistant()">
+    🤖
+</button>
+
+<div class="assistant-panel" id="assistantPanel">
+
+    <div class="assistant-header">
+
+        <strong>LearnAI Assistant</strong>
+
+        <button onclick="toggleAssistant()">
+            ×
+        </button>
+
+    </div>
+
+    <div class="assistant-body">
+
+        <div class="assistant-message" id="assistantMessage">
+            Hi! I'm your learning assistant. Ask me about the current topic.
+        </div>
+
+        <div class="quick-actions">
+
+            <button onclick="assistantQuick('explain')">
+                Explain simply
+            </button>
+
+            <button onclick="assistantQuick('example')">
+                Give example
+            </button>
+
+            <button onclick="assistantQuick('keypoints')">
+                Key points
+            </button>
+
+        </div>
+
+        <div class="assistant-input">
+
+            <input
+                type="text"
+                id="assistantInput"
+                placeholder="Ask something..."
+                onkeydown="if(event.key==='Enter') askAssistant()"
+            >
+
+            <button onclick="askAssistant()">
+                Send
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    const params = new URLSearchParams(window.location.search);
+
+    const courseId = params.get("courseId");
+
+    let course = null;
+    let lessons = [];
+    let currentIndex = 0;
+
+    /*
+     * Load the course and its lessons.
+     */
+
+    async function loadCourse() {
+
+        if (!courseId) {
+
+            showError("No course was selected.");
+
+            return;
+        }
+
+        try {
+
+            const courseResponse =
+                await fetch(`/api/courses/${courseId}`);
+
+            if (!courseResponse.ok) {
+                throw new Error("Course could not be loaded.");
+            }
+
+            course = await courseResponse.json();
+
+            document.getElementById("courseTitle").textContent =
+                course.title || "Course";
+
+            document.getElementById("courseDescription").textContent =
+                course.description || "Start learning this course.";
+
+            document.getElementById("courseDifficulty").textContent =
+                course.difficulty || "All Levels";
+
+
+            const lessonResponse =
+                await fetch(`/api/lessons/course/${courseId}`);
+
+            if (!lessonResponse.ok) {
+                throw new Error("Lessons could not be loaded.");
+            }
+
+            lessons = await lessonResponse.json();
+
+            lessons.sort(
+                (a, b) => (a.lessonOrder || 0) - (b.lessonOrder || 0)
+            );
+
+            document.getElementById("topicCount").textContent =
+                `${lessons.length} Topics`;
+
+            renderTopics();
+
+            if (lessons.length === 0) {
+
+                showError("No lessons are available for this course.");
+
+                return;
+            }
+
+            const firstIncomplete =
+                lessons.findIndex(lesson => !lesson.completed);
+
+            if (firstIncomplete >= 0) {
+                currentIndex = firstIncomplete;
+            } else {
+                currentIndex = lessons.length - 1;
+            }
+
+            showLesson(currentIndex);
+
+            updateProgress();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showError(
+                "Unable to load the course. Please make sure you are logged in."
+            );
+        }
+    }
+
+
+    /*
+     * Render topic sidebar.
+     */
+
+    function renderTopics() {
+
+        const topicList =
+            document.getElementById("topicList");
+
+        topicList.innerHTML = "";
+
+        lessons.forEach((lesson, index) => {
+
+            const topic = document.createElement("div");
+
+            topic.className = "topic";
+
+            if (index === currentIndex) {
+                topic.classList.add("active");
+            }
+
+            if (lesson.completed) {
+                topic.classList.add("completed");
+            }
+
+            topic.onclick = () => showLesson(index);
+
+            topic.innerHTML = `
+
+                <div class="topic-number">
+                    Topic ${index + 1}
+                </div>
+
+                <div class="topic-title">
+
+                    ${escapeHtml(lesson.title)}
+
+                    ${
+                        lesson.completed
+                        ? '<span class="check">✓</span>'
+                        : ''
+                    }
+
+                </div>
+            `;
+
+            topicList.appendChild(topic);
+
+        });
+    }
+
+
+    /*
+     * Show selected lesson.
+     */
+
+    function showLesson(index) {
+
+        if (index < 0 || index >= lessons.length) {
+            return;
+        }
+
+        currentIndex = index;
+
+        const lesson = lessons[currentIndex];
+
+        const lessonArea =
+            document.getElementById("lessonArea");
+
+        lessonArea.innerHTML = `
+
+            <div class="lesson-card">
+
+                <div class="lesson-number">
+                    TOPIC ${currentIndex + 1} OF ${lessons.length}
+                </div>
+
+                <h2>
+                    ${escapeHtml(lesson.title)}
+                </h2>
+
+                <div class="lesson-content">
+                    ${formatContent(lesson.content)}
+                </div>
+
+                <div class="lesson-actions">
+
+                    <button
+                        class="action-btn previous-btn"
+                        onclick="previousLesson()"
+                        ${currentIndex === 0 ? "disabled" : ""}
+                    >
+                        ← Previous
+                    </button>
+
+                    <button
+                        class="action-btn complete-btn"
+                        onclick="completeLesson()"
+                        id="completeButton"
+                    >
+                        ${
+                            lesson.completed
+                            ? "✓ Completed"
+                            : "✓ Mark Topic Complete"
+                        }
+                    </button>
+
+                    <button
+                        class="action-btn next-btn"
+                        onclick="nextLesson()"
+                        ${currentIndex === lessons.length - 1 ? "disabled" : ""}
+                    >
+                        Next →
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        renderTopics();
+
+        updateProgress();
+
+        updateAssistantMessage();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+
+    /*
+     * Format lesson text.
+     */
+
+    function formatContent(content) {
+
+        if (!content) {
+            return "<p>No content available for this topic.</p>";
+        }
+
+        const lines =
+            content.split(/\r?\n/);
+
+        let html = "";
+
+        let listOpen = false;
+
+        let boxOpen = false;
+
+        function closeList() {
+
+            if (listOpen) {
+                html += "</ul>";
+
+                listOpen = false;
+            }
+        }
+
+        function closeBox() {
+
+            if (boxOpen) {
+
+                closeList();
+
+                html += "</div>";
+
+                boxOpen = false;
+            }
+        }
+
+        for (let rawLine of lines) {
+
+            const line =
+                rawLine.trim();
+
+            if (!line) {
+
+                closeList();
+
+                continue;
+            }
+
+            if (
+                line.startsWith("Important terms:") ||
+                line.startsWith("Common regression algorithms") ||
+                line.startsWith("Common classification algorithms") ||
+                line.startsWith("Common evaluation measures") ||
+                line.startsWith("Important CNN components") ||
+                line.startsWith("Important LSTM gates") ||
+                line.startsWith("Common activation functions") ||
+                line.startsWith("Important OOP concepts") ||
+                line.startsWith("Common Python data structures") ||
+                line.startsWith("Common stack operations") ||
+                line.startsWith("Common queue operations") ||
+                line.startsWith("Important tree terms") ||
+                line.startsWith("Important search methods")
+            ) {
+
+                closeBox();
+
+                html += `
+                    <div class="content-box">
+                    <h3>${escapeHtml(line)}</h3>
+                `;
+
+                boxOpen = true;
+
+                continue;
+            }
+
+            if (line.startsWith("Example:")) {
+
+                closeBox();
+
+                html += `
+                    <div class="example-box">
+                    <h3>Example</h3>
+                `;
+
+                boxOpen = true;
+
+                const rest =
+                    line.substring(8).trim();
+
+                if (rest) {
+                    html += `<p>${escapeHtml(rest)}</p>`;
+                }
+
+                continue;
+            }
+
+            if (
+                line.startsWith("Key Points:") ||
+                line.startsWith("Key Point:")
+            ) {
+
+                closeBox();
+
+                html += `
+                    <div class="key-box">
+                    <h3>Key Points</h3>
+                `;
+
+                boxOpen = true;
+
+                continue;
+            }
+
+            if (line.startsWith("Course Summary:")) {
+
+                closeBox();
+
+                html += `
+                    <div class="key-box">
+                    <h3>Course Summary</h3>
+                `;
+
+                boxOpen = true;
+
+                const rest =
+                    line.substring("Course Summary:".length).trim();
+
+                if (rest) {
+                    html += `<p>${escapeHtml(rest)}</p>`;
+                }
+
+                continue;
+            }
+
+            if (/^[•\-]\s+/.test(line)) {
+
+                if (!listOpen) {
+
+                    html += "<ul>";
+
+                    listOpen = true;
+                }
+
+                const item =
+                    line.replace(/^[•\-]\s+/, "");
+
+                html += `<li>${escapeHtml(item)}</li>`;
+
+                continue;
+            }
+
+            closeList();
+
+            if (/^\d+\.\s+/.test(line)) {
+
+                html += `
+                    <p>
+                        <strong>${escapeHtml(line)}</strong>
+                    </p>
+                `;
+
+                continue;
+            }
+
+            html += `
+                <p>${escapeHtml(line)}</p>
+            `;
+        }
+
+        closeBox();
+
+        closeList();
+
+        return html;
+    }
+
+
+    /*
+     * Mark current topic complete.
+     */
+
+    async function completeLesson() {
+
+        const lesson =
+            lessons[currentIndex];
+
+        if (!lesson) {
+            return;
+        }
+
+        if (lesson.completed) {
+
+            if (currentIndex < lessons.length - 1) {
+                nextLesson();
+            }
+
+            return;
+        }
+
+        const button =
+            document.getElementById("completeButton");
+
+        if (button) {
+            button.disabled = true;
+            button.textContent = "Saving...";
+        }
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/lessons/${lesson.id}/complete`,
+                    {
+                        method: "POST"
+                    }
+                );
+
+            if (!response.ok) {
+                throw new Error("Unable to complete lesson.");
+            }
+
+            lesson.completed = true;
+
+            updateProgress();
+
+            renderTopics();
+
+            if (currentIndex === lessons.length - 1) {
+
+                showCompletion();
+
+            } else {
+
+                setTimeout(() => {
+                    showLesson(currentIndex + 1);
+                }, 500);
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to save your progress. Please try again."
+            );
+
+            if (button) {
+                button.disabled = false;
+                button.textContent = "✓ Mark Topic Complete";
+            }
+        }
+    }
+
+
+    /*
+     * Previous topic.
+     */
+
+    function previousLesson() {
+
+        if (currentIndex > 0) {
+
+            showLesson(currentIndex - 1);
+        }
+    }
+
+
+    /*
+     * Next topic.
+     */
+
+    function nextLesson() {
+
+        if (currentIndex < lessons.length - 1) {
+
+            showLesson(currentIndex + 1);
+        }
+    }
+
+
+    /*
+     * Course progress.
+     */
+
+    function updateProgress() {
+
+        if (!lessons.length) {
+            return;
+        }
+
+        const completed =
+            lessons.filter(
+                lesson => lesson.completed
+            ).length;
+
+        const percentage =
+            Math.round(
+                completed / lessons.length * 100
+            );
+
+        document.getElementById("progressText")
+            .textContent = `${percentage}%`;
+
+        document.getElementById("progressFill")
+            .style.width = `${percentage}%`;
+    }
+
+
+    /*
+     * Completion screen.
+     */
+
+    function showCompletion() {
+
+        document.getElementById("lessonArea")
+            .style.display = "none";
+
+        document.getElementById("completionArea")
+            .style.display = "block";
+
+        updateProgress();
+    }
+
+
+    /*
+     * Open practice page for this course.
+     */
+
+    function openQuiz() {
+
+        window.location.href =
+            `/practice.html?courseId=${courseId}`;
+    }
+
+
+    /*
+     * Error message.
+     */
+
+    function showError(message) {
+
+        document.getElementById("lessonArea").innerHTML = `
+
+            <div class="error">
+                ${escapeHtml(message)}
+            </div>
+
+        `;
+
+        document.getElementById("topicList").innerHTML = "";
+    }
+
+
+    /*
+     * AI Assistant.
+     */
+
+    function toggleAssistant() {
+
+        const panel =
+            document.getElementById("assistantPanel");
+
+        panel.style.display =
+            panel.style.display === "block"
+            ? "none"
+            : "block";
+    }
+
+
+    function updateAssistantMessage() {
+
+        if (!lessons[currentIndex]) {
+            return;
+        }
+
+        const topic =
+            lessons[currentIndex].title;
+
+        document.getElementById("assistantMessage").textContent =
+            `I can help you with "${topic}". Ask me to explain it, give an example, or list the key points.`;
+    }
+
+
+    function assistantQuick(type) {
+
+        const lesson =
+            lessons[currentIndex];
+
+        if (!lesson) {
+            return;
+        }
+
+        const topic =
+            lesson.title;
+
+        let answer = "";
+
+        if (type === "explain") {
+
+            answer =
+                `"${topic}" is an important part of ${course.title}. ` +
+                `Start by understanding the main definition, then learn the important concepts and finally practice with examples.`;
+
+        } else if (type === "example") {
+
+            answer =
+                `Example for "${topic}": Try connecting the concept to a simple real-world problem. ` +
+                `After understanding the example, try explaining the same concept in your own words.`;
+
+        } else if (type === "keypoints") {
+
+            answer =
+                `Key points for "${topic}": Read the explanation carefully, remember the important terms, ` +
+                `understand the example, and complete the topic before moving to the next one.`;
+        }
+
+        document.getElementById("assistantMessage")
+            .textContent = answer;
+    }
+
+
+    function askAssistant() {
+
+        const input =
+            document.getElementById("assistantInput");
+
+        const question =
+            input.value.trim();
+
+        if (!question) {
+            return;
+        }
+
+        const lesson =
+            lessons[currentIndex];
+
+        const topic =
+            lesson ? lesson.title : "this topic";
+
+        let answer;
+
+        const lower =
+            question.toLowerCase();
+
+        if (
+            lower.includes("example") ||
+            lower.includes("example?")
+        ) {
+
+            answer =
+                `For "${topic}", try to relate the concept to a simple practical problem. ` +
+                `Understanding one practical example can make the theory easier to remember.`;
+
+        } else if (
+            lower.includes("simple") ||
+            lower.includes("explain") ||
+            lower.includes("meaning")
+        ) {
+
+            answer =
+                `In simple words, "${topic}" means understanding the main idea, ` +
+                `how it works, and where it is used. Read the explanation above and focus on the important terms.`;
+
+        } else if (
+            lower.includes("key") ||
+            lower.includes("important")
+        ) {
+
+            answer =
+                `For "${topic}", focus on its definition, main concepts, working process, examples and applications.`;
+
+        } else {
+
+            answer =
+                `Your current topic is "${topic}". ` +
+                `Try asking me "Explain this simply", "Give me an example", or "What are the key points?"`;
+        }
+
+        document.getElementById("assistantMessage")
+            .textContent = answer;
+
+        input.value = "";
+    }
+
+
+    /*
+     * Logout.
+     */
+
+    async function logout() {
+
+        try {
+
+            await fetch("/logout", {
+                method: "POST"
+            });
+
+        } catch (error) {
+
+            console.log(error);
+        }
+
+        window.location.href =
+            "/login-page.html";
+    }
+
+
+    /*
+     * Security helper.
+     */
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    /*
+     * Start.
+     */
+
+    loadCourse();
+
+</script>
+
+</body>
+</html>

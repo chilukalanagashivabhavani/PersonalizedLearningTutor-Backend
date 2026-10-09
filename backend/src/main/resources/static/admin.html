@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard | Personalized Tutor</title>
+<style>
+:root{--p:#6847f5;--lp:#f0ecff;--bg:#f7f8fc;--text:#182338;--muted:#75809a;--border:#e9e7f2}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:var(--bg);color:var(--text);font-size:15px}
+.sidebar{position:fixed;inset:0 auto 0 0;width:280px;background:white;padding:24px 14px 16px;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid var(--border);z-index:10}
+.logo{display:flex;align-items:center;gap:12px;padding:0 10px 28px;font-size:21px;font-weight:800;line-height:1.35}
+.logo-icon{width:43px;height:46px;flex-shrink:0;border-radius:14px;background:linear-gradient(135deg,#805cff,#5637df);display:grid;place-items:center;font-size:22px;color:white}
+.nav:before{content:"Learning menu";display:block;padding:0 14px 11px;color:#9294aa;font-size:13px;letter-spacing:1.5px}
+.nav a{display:flex;align-items:center;min-height:46px;padding:12px 14px;margin-bottom:5px;border-radius:13px;color:#68738e;text-decoration:none;font-size:15px;font-weight:600}
+.nav a:hover,.nav a.active{background:var(--lp);color:var(--p)}
+.grow-card{margin-top:auto;padding:17px;border-radius:18px;color:white;background:linear-gradient(135deg,#704cf5,#5033d3);line-height:1.55}
+.grow-card h3{font-size:16px;margin-bottom:6px}.grow-card p{font-size:13px;margin-bottom:12px}
+.grow-card a{display:inline-block;background:white;color:var(--p);padding:9px 12px;border-radius:10px;font-size:13px;font-weight:bold;text-decoration:none}
+.logout{padding-top:14px}.logout button{width:100%;min-height:46px;border:1px solid var(--border);border-radius:12px;background:white;color:#68738e;font-size:14px;font-weight:600;cursor:pointer}
+.main{margin-left:280px;padding:30px;max-width:1600px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}
+h1{font-size:28px;margin-bottom:7px}.muted{color:var(--muted);line-height:1.6}
+.user{padding:11px 15px;border:1px solid var(--border);background:white;border-radius:11px;font-weight:bold}
+.hero{padding:25px;border-radius:19px;background:linear-gradient(120deg,#704cf5,#5033d3);color:white;margin-bottom:22px}
+.hero h2{font-size:23px;margin-bottom:9px}.hero p{line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.card,.panel{background:white;border:1px solid #efedf5;border-radius:16px;padding:20px;box-shadow:0 5px 20px #19233c05;min-width:0}
+.card small{display:block;color:var(--muted);font-size:12px;font-weight:bold;margin-bottom:10px}
+.value{font-size:26px;font-weight:bold;color:var(--p);overflow-wrap:anywhere}
+.panel{margin-bottom:20px}.panel h2{font-size:19px;margin-bottom:15px}
+.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;text-align:left}
+th,td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px;white-space:nowrap}
+th{color:var(--muted);font-size:12px;background:#faf9fe}
+.empty{padding:18px;background:#faf9fe;border-radius:11px;color:var(--muted);line-height:1.8}
+.message{padding:13px 15px;background:var(--lp);color:#5233dd;border-radius:10px;margin-bottom:18px;line-height:1.6}
+@media(max-width:1100px){.sidebar{width:250px}.main{margin-left:250px;padding:22px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.sidebar{position:relative;width:100%;height:auto}.logo{padding-bottom:20px}.nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.nav a{font-size:13px;padding:10px}.grow-card{margin-top:15px}.main{margin:0;padding:17px 13px}.header{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+<div class="logo"><div class="logo-icon">🎓</div><div>Personalized<br>Tutor</div></div>
+<nav class="nav">
+<a href="/dashboard">🏠 Dashboard</a><a href="/profile">👤 My Profile</a><a href="/courses.html">📚 My Courses</a>
+<a href="/progress.html">📊 Learning Progress</a><a href="/practice.html">✏️ Practice &amp; Quizzes</a>
+<a href="/recommendations.html">✨ Recommendations</a><a href="/settings.html">⚙️ Settings</a>
+<a class="active" href="/admin.html">▦ Admin Dashboard</a>
+</nav>
+<div class="grow-card"><h3>🚀 Keep growing!</h3><p>Review learning activity and course participation.</p><a href="/courses.html">View Courses →</a></div>
+<div class="logout"><button onclick="logout()">↪ &nbsp; Logout</button></div>
+</aside>
+<main class="main">
+<header class="header"><div><h1>Admin Dashboard</h1><p class="muted">Overview of learners, courses, and learning activity.</p></div><div class="user" id="username">Loading...</div></header>
+<section class="hero"><h2>Platform overview</h2><p>Review platform statistics and registered students.</p></section>
+<div id="message" class="message">Loading admin data...</div>
+<section class="stats">
+<div class="card"><small>STUDENTS</small><div class="value" id="students">—</div></div>
+<div class="card"><small>COURSES</small><div class="value" id="courses">—</div></div>
+<div class="card"><small>ENROLLMENTS</small><div class="value" id="enrollments">—</div></div>
+<div class="card"><small>QUIZ ATTEMPTS</small><div class="value" id="attempts">—</div></div>
+</section>
+<section class="panel"><h2>Registered Students</h2><div id="studentList" class="empty">Loading students...</div></section>
+<section class="panel"><h2>Available Courses</h2><div id="courseList" class="empty">Loading courses...</div></section>
+</main>
+<script>
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function table(headers,rows){
+if(!rows.length)return '<div class="empty">No records found.</div>';
+return '<div class="table-wrap"><table><thead><tr>'+headers.map(h=>`<th>${esc(h)}</th>`).join("")+'</tr></thead><tbody>'+rows.map(row=>'<tr>'+row.map(v=>`<td>${esc(v)}</td>`).join("")+'</tr>').join("")+'</tbody></table></div>';
+}
+async function load(){
+const message=document.getElementById("message");
+try{
+const ur=await fetch("/api/auth/me");if(!ur.ok){location.href="/login-page.html";return}
+const user=await ur.json();document.getElementById("username").textContent=user.username||"Admin";
+if(String(user.role).toUpperCase()!=="ADMIN"){
+message.textContent="This page is restricted to administrator accounts.";
+return;
+}
+const [sr,cr,st]=await Promise.all([
+fetch("/api/admin/stats"),fetch("/api/admin/courses"),fetch("/api/admin/students")
+]);
+if(sr.status===403||cr.status===403||st.status===403)throw Error("Access denied. Sign in with an administrator account.");
+if(!sr.ok||!cr.ok||!st.ok)throw Error("Could not load all admin information. Check that the backend is running.");
+const stats=await sr.json(),courses=await cr.json(),students=await st.json();
+document.getElementById("students").textContent=stats.students??students.length;
+document.getElementById("courses").textContent=stats.courses??courses.length;
+document.getElementById("enrollments").textContent=stats.enrollments??0;
+document.getElementById("attempts").textContent=stats.quizAttempts??0;
+document.getElementById("studentList").innerHTML=table(["ID","Username","Role"],students.map(s=>[s.id,s.username,s.role]));
+document.getElementById("courseList").innerHTML=table(["ID","Course","Difficulty"],courses.map(c=>[c.id,c.title,c.difficulty??c.level??"—"]));
+message.textContent="Admin information loaded successfully.";
+}catch(e){message.textContent=e.message;console.error(e)}
+}
+async function logout(){try{await fetch("/logout",{method:"POST"})}finally{location.href="/login-page.html?logout"}}
+load();
+</script>
+</body>
+</html>

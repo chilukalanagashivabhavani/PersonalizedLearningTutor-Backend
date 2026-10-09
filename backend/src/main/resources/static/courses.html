@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Courses | Personalized Tutor</title>
+<style>
+:root{--purple:#6847f5;--light:#f0ecff;--bg:#f7f8fc;--text:#182338;--muted:#75809a;--border:#e9e7f2}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:var(--bg);color:var(--text);font-size:15px}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:280px;background:white;padding:24px 14px 16px;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid var(--border);z-index:10}
+.logo{display:flex;align-items:center;gap:12px;padding:0 10px 28px;font-size:21px;font-weight:800;line-height:1.35;color:var(--text)}
+.logo-icon{width:43px;height:46px;flex-shrink:0;border-radius:14px;background:linear-gradient(135deg,#805cff,#5637df);display:grid;place-items:center;color:white;font-size:22px}
+.nav:before{content:"Learning menu";display:block;padding:0 14px 11px;color:#9294aa;font-size:13px;letter-spacing:1.5px}
+.nav a{display:flex;align-items:center;min-height:46px;padding:12px 14px;margin-bottom:5px;border-radius:13px;color:#68738e;text-decoration:none;font-size:15px;font-weight:600}
+.nav a:hover,.nav a.active{background:var(--light);color:var(--purple)}
+.grow-card{margin-top:auto;padding:17px;border-radius:18px;color:white;background:linear-gradient(135deg,#704cf5,#5033d3);line-height:1.55}
+.grow-card h3{font-size:16px;margin-bottom:6px}.grow-card p{font-size:13px;margin-bottom:12px}
+.grow-card a{display:inline-block;background:white;color:var(--purple);padding:9px 12px;border-radius:10px;font-size:13px;font-weight:bold;text-decoration:none}
+.logout{padding-top:14px}.logout button{width:100%;min-height:46px;border:1px solid var(--border);border-radius:12px;padding:12px;background:white;color:#68738e;font-size:14px;font-weight:600;cursor:pointer}
+.main{margin-left:280px;padding:30px;max-width:1600px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}
+h1{font-size:28px;margin-bottom:7px}.muted{color:var(--muted);line-height:1.6}
+.user-pill{background:white;border:1px solid var(--border);padding:11px 15px;border-radius:11px;font-weight:bold;overflow-wrap:anywhere}
+.hero{background:linear-gradient(120deg,#704cf5,#5033d3);padding:25px;border-radius:19px;color:white;margin-bottom:22px}
+.hero h2{font-size:24px;margin-bottom:9px}.hero p{line-height:1.6;font-size:14px}
+.hero .btn{background:white;color:#6041e8;margin-top:15px}
+.toolbar{display:flex;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.search{flex:1;min-width:180px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:white;font-size:14px;outline:none}
+.search:focus{border-color:var(--purple)}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter{border:1px solid var(--border);border-radius:9px;padding:10px 13px;background:white;color:var(--text);font-size:13px;cursor:pointer}
+.filter.active{background:var(--purple);border-color:var(--purple);color:white}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.course{background:white;border:1px solid #eceef5;border-radius:16px;padding:20px;box-shadow:0 5px 20px #19233c05;display:flex;flex-direction:column;min-width:0}
+.course-icon{width:48px;height:48px;border-radius:13px;background:var(--light);display:grid;place-items:center;font-size:23px;margin-bottom:15px;color:var(--purple)}
+.course h3{font-size:18px;margin-bottom:9px;overflow-wrap:anywhere}
+.description{color:var(--muted);font-size:13px;line-height:1.7;flex:1;margin-bottom:15px}
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}
+.tag{background:#f1efff;color:#6546e8;border-radius:20px;padding:6px 9px;font-size:11px;font-weight:bold}
+.tag.gray{background:#f1f3f7;color:#677184}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}
+.track{height:8px;background:#e9ebf2;border-radius:20px;overflow:hidden;margin-bottom:15px}
+.fill{height:100%;background:linear-gradient(90deg,#8664ff,#6242ed)}
+.btn{display:inline-block;text-align:center;border:0;border-radius:9px;background:var(--purple);color:white;padding:11px 13px;font-size:13px;font-weight:bold;text-decoration:none;cursor:pointer}
+.btn:hover{background:#5233dd}.btn:disabled{opacity:.6;cursor:wait}
+.empty{grid-column:1/-1;background:white;padding:25px;border-radius:15px;color:var(--muted);line-height:1.8;text-align:center}
+.notice{padding:12px 15px;border-radius:10px;background:var(--light);color:#5233dd;margin-bottom:17px;display:none;font-size:14px}
+@media(max-width:1100px){.sidebar{width:250px}.main{margin-left:250px;padding:22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:850px){.grid{grid-template-columns:1fr}}
+@media(max-width:650px){.sidebar{position:relative;width:100%;height:auto}.logo{padding-bottom:20px}.nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.nav a{font-size:13px;padding:10px}.grow-card{margin-top:15px}.main{margin-left:0;padding:17px 13px}.header{align-items:flex-start;flex-direction:column}.toolbar{flex-direction:column}.filters{width:100%}.filter{flex:1}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="logo"><div class="logo-icon">🎓</div><div>Personalized<br>Tutor</div></div>
+    <nav class="nav">
+        <a href="/dashboard">🏠 Dashboard</a>
+        <a href="/profile">👤 My Profile</a>
+        <a class="active" href="/courses.html">📚 My Courses</a>
+        <a href="/progress.html">📊 Learning Progress</a>
+        <a href="/practice.html">✏️ Practice &amp; Quizzes</a>
+        <a href="/recommendations.html">✨ Recommendations</a>
+        <a href="/settings.html">⚙️ Settings</a>
+        <a id="adminLink" href="/admin.html" hidden>▦ Admin Dashboard</a>
+    </nav>
+    <div class="grow-card">
+        <h3>🚀 Keep growing!</h3>
+        <p>Small learning sessions every day can help you build lasting skills.</p>
+        <a href="/courses.html">Explore courses →</a>
+    </div>
+    <div class="logout"><button onclick="logout()">↪ &nbsp; Logout</button></div>
+</aside>
+
+<main class="main">
+    <header class="header">
+        <div><h1>Explore Courses</h1><p class="muted">Discover subjects, learn at your pace, and build your skills.</p></div>
+        <div class="user-pill" id="topUsername">Loading...</div>
+    </header>
+
+    <section class="hero">
+        <h2>Keep learning. Keep growing.</h2>
+        <p>Explore subjects, enrol in courses, and track your learning progress from one place.</p>
+        <a class="btn" href="/progress.html">View My Progress →</a>
+    </section>
+
+    <div id="notice" class="notice" role="status"></div>
+
+    <div class="toolbar">
+        <input id="search" class="search" type="search" placeholder="Search courses..." aria-label="Search courses">
+        <div class="filters">
+            <button class="filter active" data-filter="all">All Courses</button>
+            <button class="filter" data-filter="enrolled">My Courses</button>
+            <button class="filter" data-filter="available">Not Enrolled</button>
+        </div>
+    </div>
+
+    <section id="courseGrid" class="grid">
+        <div class="empty">Loading courses...</div>
+    </section>
+</main>
+
+<script>
+let allCourses=[];
+let selectedFilter="all";
+
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const getId=c=>String(c.id??c.courseId??"");
+const getTitle=c=>c.courseTitle??c.title??"Untitled Course";
+const getProgress=c=>Math.max(0,Math.min(100,Number(c.progress??0)));
+
+async function loadCourses(){
+    const grid=document.getElementById("courseGrid");
+    try{
+        const userRes=await fetch("/api/auth/me");
+        if(!userRes.ok){location.href="/login-page.html";return}
+        const user=await userRes.json();
+        document.getElementById("topUsername").textContent=user.username||"Learner";
+        if(String(user.role).toUpperCase()==="ADMIN")document.getElementById("adminLink").hidden=false;
+
+        const [courseRes,enrollRes]=await Promise.all([
+            fetch("/api/courses"),
+            fetch("/api/enrollments")
+        ]);
+        if(!courseRes.ok)throw new Error("Could not retrieve the course list.");
+
+        const courses=await courseRes.json();
+        const enrollments=enrollRes.ok?await enrollRes.json():[];
+        const enrollmentMap=new Map(enrollments.map(e=>[getId(e),getProgress(e)]));
+
+        allCourses=courses.map(c=>({
+            ...c,
+            _enrolled:enrollmentMap.has(getId(c)),
+            _progress:enrollmentMap.get(getId(c))??0
+        }));
+        renderCourses();
+    }catch(error){
+        grid.innerHTML=`<div class="empty">Could not load courses. Please refresh the page.<br><small>${esc(error.message)}</small></div>`;
+    }
+}
+
+function renderCourses(){
+    const query=document.getElementById("search").value.trim().toLowerCase();
+    const filtered=allCourses.filter(c=>{
+        const text=(String(getTitle(c))+" "+String(c.description||"")).toLowerCase();
+        const matchesText=text.includes(query);
+        const matchesFilter=selectedFilter==="all"||
+            (selectedFilter==="enrolled"&&c._enrolled)||
+            (selectedFilter==="available"&&!c._enrolled);
+        return matchesText&&matchesFilter;
+    });
+
+    const grid=document.getElementById("courseGrid");
+    if(!filtered.length){
+        grid.innerHTML='<div class="empty">No matching courses found. Try another search or filter.</div>';
+        return;
+    }
+
+    const symbols=["▤","⌘","</>","▦","✦","◈"];
+    grid.innerHTML=filtered.map((c,i)=>{
+        const id=getId(c);
+        const title=esc(getTitle(c));
+        const description=esc(c.description||"Explore this course and build your knowledge step by step.");
+        const difficulty=esc(c.difficulty||c.level||"All Levels");
+        const progress=c._progress;
+
+        return `<article class="course">
+            <div class="course-icon">${symbols[i%symbols.length]}</div>
+            <h3>${title}</h3>
+            <p class="description">${description}</p>
+            <div class="tags">
+                <span class="tag">${difficulty}</span>
+                <span class="tag gray">${c._enrolled?"Enrolled":"Available"}</span>
+            </div>
+            ${c._enrolled?`
+                <div class="progress-label"><span>Your progress</span><strong>${progress}%</strong></div>
+                <div class="track"><div class="fill" style="width:${progress}%"></div></div>
+                <a class="btn" href="/learn.html?courseId=${encodeURIComponent(id)}">${progress>=100?"Review Course":"Continue Learning"}</a>
+            `:`
+                <button class="btn" data-enroll-id="${esc(id)}">Enrol in Course →</button>
+            `}
+        </article>`;
+    }).join("");
+
+    grid.querySelectorAll("[data-enroll-id]").forEach(button=>{
+        button.addEventListener("click",()=>enroll(button.dataset.enrollId,button));
+    });
+}
+
+async function enroll(courseId,button){
+    button.disabled=true;
+    button.textContent="Enrolling...";
+    const notice=document.getElementById("notice");
+    notice.style.display="none";
+    try{
+        const response=await fetch("/api/enrollments/"+encodeURIComponent(courseId),{method:"POST"});
+        const data=await response.json().catch(()=>({}));
+        if(!response.ok)throw new Error(data.message||data.error||"Enrollment failed.");
+        notice.textContent=data.message||"Successfully enrolled in the course.";
+        notice.style.display="block";
+        await loadCourses();
+    }catch(error){
+        notice.textContent=error.message;
+        notice.style.display="block";
+        button.disabled=false;
+        button.textContent="Try Again";
+    }
+}
+
+document.getElementById("search").addEventListener("input",renderCourses);
+document.querySelectorAll("[data-filter]").forEach(button=>{
+    button.addEventListener("click",()=>{
+        document.querySelectorAll("[data-filter]").forEach(b=>b.classList.remove("active"));
+        button.classList.add("active");
+        selectedFilter=button.dataset.filter;
+        renderCourses();
+    });
+});
+
+async function logout(){
+    try{await fetch("/logout",{method:"POST"})}
+    finally{location.href="/login-page.html?logout"}
+}
+loadCourses();
+</script>
+</body>
+</html>
