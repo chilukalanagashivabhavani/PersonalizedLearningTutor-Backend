@@ -17,22 +17,20 @@ public class DataInitializer {
             PasswordEncoder passwordEncoder) {
 
         return args -> {
-
             if (userRepository.findByUsername("admin").isEmpty()) {
+                String initialAdminPassword = System.getenv("ADMIN_INITIAL_PASSWORD");
+                if (initialAdminPassword == null || initialAdminPassword.isBlank()) {
+                    System.out.println("Default admin account was not created because ADMIN_INITIAL_PASSWORD is not set.");
+                    return;
+                }
 
                 User user = new User(
                         "admin",
-                        passwordEncoder.encode("admin123"),
+                        passwordEncoder.encode(initialAdminPassword),
                         "ADMIN"
                 );
-
                 userRepository.save(user);
-
-                System.out.println("=================================");
-                System.out.println("Default admin user created!");
-                System.out.println("Username: admin");
-                System.out.println("Password: admin123");
-                System.out.println("=================================");
+                System.out.println("Default admin account created.");
             }
         };
     }
